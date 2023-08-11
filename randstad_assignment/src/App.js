@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import AlbumCards from "./components/AlbumCards";
+import Header from "./components/Header";
+import axios from "axios";
 
 function App() {
+  const [APIData, setAPIData] = useState([]);
+  useEffect(() => {
+    //get method to display getAlbum data
+
+    const getAlbumData = async () => {
+      return await axios
+        .get(`https://jsonplaceholder.typicode.com/albums`)
+        .then((response) => {
+          setAPIData(response.data);
+        })
+        .catch((err) => console.log(err));
+    };
+
+    getAlbumData();
+  }, []);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+      <AlbumCards APIData={APIData} />
     </div>
   );
 }
